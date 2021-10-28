@@ -98,7 +98,7 @@ class ActiveRecord::ConnectionAdapters::NullDBAdapter < ActiveRecord::Connection
   end
 
   # Rails 6.1+
-  if ActiveRecord::VERSION::MAJOR >= 6 and ActiveRecord::VERSION::MINOR > 0
+  if ActiveRecord::VERSION::MAJOR >= 7 || (ActiveRecord::VERSION::MAJOR >= 6 and ActiveRecord::VERSION::MINOR > 0)
     def remove_index(table_name, column_name = nil, **options )
       index_name = index_name_for_remove(table_name, column_name, options)
       index = @indexes[table_name].reject! { |index| index.name == index_name }
@@ -264,7 +264,7 @@ class ActiveRecord::ConnectionAdapters::NullDBAdapter < ActiveRecord::Connection
 
   protected
 
-  def select(statement, name = nil, binds = [])
+  def select(statement, name = nil, binds = [], prepare: nil, async: nil)
     EmptyResult.new.tap do |r|
       r.bind_column_meta(columns_for(name))
       self.execution_log << Statement.new(entry_point, statement)
