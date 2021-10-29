@@ -1,7 +1,10 @@
 Unreleased
 ----------
 
-- Add support for Rails 7. #111
+0.8.0 (2022-10-28)
+-----------
+
+- Add support for Rails 7. #111 #112
 
 0.7.0 (2021-01-18)
 -----------
