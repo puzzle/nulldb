@@ -30,6 +30,12 @@ jobs:
           - ruby: "2.6"
             gemfile: "activerecord_7.0"
 
+          - ruby: "jruby-9.3.1.0"
+            gemfile: "activerecord_7.0"
+
+          - ruby: "jruby-9.3.1.0"
+            gemfile: "activerecord_master"
+
     runs-on: ubuntu-latest
     env:
       BUNDLE_GEMFILE: gemfiles/${{ matrix.gemfile }}.gemfile
