@@ -10,18 +10,31 @@ jobs:
             activerecord_5.2,
             activerecord_6.0,
             activerecord_6.1,
+            activerecord_7.0,
             activerecord_master,
           ]
-        ruby: ["2.5", "2.6", "2.7", "3.0", "jruby-9.2.13.0"]
+        ruby: ["2.5", "2.6", "2.7", "3.0", "jruby-9.3.1.0"]
         exclude:
           - ruby: "3.0"
             gemfile: activerecord_5.2
 
-          - ruby: "jruby-9.2.13.0"
-            gemfile: activerecord_6.1
+          - ruby: "2.5"
+            gemfile: "activerecord_master"
 
-          - ruby: "jruby-9.2.13.0"
-            gemfile: activerecord_master
+          - ruby: "2.6"
+            gemfile: "activerecord_master"
+
+          - ruby: "2.5"
+            gemfile: "activerecord_7.0"
+
+          - ruby: "2.6"
+            gemfile: "activerecord_7.0"
+
+          - ruby: "jruby-9.3.1.0"
+            gemfile: "activerecord_7.0"
+
+          - ruby: "jruby-9.3.1.0"
+            gemfile: "activerecord_master"
 
     runs-on: ubuntu-latest
     env:
