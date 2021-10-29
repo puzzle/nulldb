@@ -7,7 +7,6 @@ group :development, :test do
   gem 'rspec', '>= 1.2.9'
   gem 'rake'
   gem 'rdoc'
-  gem 'pry-byebug'
 end
 
 group :development do
