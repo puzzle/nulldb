@@ -14,7 +14,7 @@ Gem::Specification.new do |s|
   s.email = "cabello@users.noreply.github.com"
   s.extra_rdoc_files = [
     "LICENSE",
-    "README.rdoc"
+    "README.md"
   ]
   s.files    = `git ls-files`.split($/)
   s.homepage = "https://github.com/nulldb/nulldb"

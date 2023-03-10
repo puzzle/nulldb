@@ -1,6 +1,14 @@
 Unreleased
 ----------
 
+0.9.0 (2023-03-10)
+-----------
+
+- Add support to BigSerial #119
+- Add support to hstore #118
+- Support Postgres type modifiers #117
+
+
 0.8.0 (2022-10-28)
 -----------
 
