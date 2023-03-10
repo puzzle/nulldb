@@ -343,13 +343,37 @@ class ActiveRecord::ConnectionAdapters::NullDBAdapter < ActiveRecord::Connection
     [nil, @logger, @config]
   end
 
+  # Register types only once to avoid ActiveRecord::TypeConflictError
+  # in ActiveRecord::Type::Registration#<=>
+  REGISTRATION_MUTEX = Mutex.new
+
   def register_types
-    require 'active_model/type'
+    REGISTRATION_MUTEX.synchronize do
+      return if self.class.types_registered
+
+      self.class.types_registered = true
+    end
+
     ActiveRecord::Type.register(
       :primary_key,
       ActiveModel::Type::Integer,
       adapter: adapter_name,
       override: true
     )
+
+    ActiveRecord::Type.add_modifier({ array: true }, DummyOID, adapter: :nulldb)
+    ActiveRecord::Type.add_modifier({ range: true }, DummyOID, adapter: :nulldb)
+  end
+
+  class << self
+    attr_accessor :types_registered
+  end
+
+  class DummyOID < ActiveModel::Type::Value
+    attr_reader :subtype
+
+    def initialize(*args)
+      @subtype = args.first
+    end
   end
 end

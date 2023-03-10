@@ -503,6 +503,20 @@ describe 'adapter-specific extensions' do
     should_have_column(ExtendedModel, :jsonb_column, :json)
   end
 
+  it 'supports ActiveModel attributes with postgres modifiers' do
+    class ExtendedModel < ActiveRecord::Base
+      attribute :strings, :string, array: true
+      attribute :size, :integer, range: true
+    end
+
+    expect(ExtendedModel.type_for_attribute(:strings))
+      .to be_a ActiveRecord::ConnectionAdapters::NullDBAdapter::DummyOID
+    expect(ExtendedModel.new(strings: %w[a b]).strings).to eq %w[a b]
+    expect(ExtendedModel.type_for_attribute(:size))
+      .to be_a ActiveRecord::ConnectionAdapters::NullDBAdapter::DummyOID
+    expect(ExtendedModel.new(size: 1..5).size).to eq 1..5
+  end
+
   it 'registers a primary_key type' do
     expect(ActiveRecord::Type.lookup(:primary_key, adapter: 'NullDB'))
       .to be_a(ActiveModel::Type::Integer)
