@@ -10,5 +10,6 @@ class ActiveRecord::ConnectionAdapters::NullDBAdapter
     alias_method :bigserial, :integer
     alias_method :inet, :string
     alias_method :jsonb, :json if method_defined? :json
+    alias_method :hstore, :json
   end
 end

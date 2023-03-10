@@ -490,6 +490,7 @@ describe 'adapter-specific extensions' do
           t.interval :time_interval
           t.geometry :feature_geometry, srid: 4326, type: "multi_polygon"
           t.jsonb :jsonb_column
+          t.hstore :hstore_column
         end
       end
     }.to_not raise_error
