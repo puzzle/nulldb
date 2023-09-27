@@ -2,6 +2,7 @@ class ActiveRecord::ConnectionAdapters::NullDBAdapter
 
   class TableDefinition < ActiveRecord::ConnectionAdapters::TableDefinition
     attr_accessor :name
+    alias_method :enum, :string
     alias_method :uuid, :string
     alias_method :citext, :text
     alias_method :interval, :text
