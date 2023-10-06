@@ -164,11 +164,15 @@ class ActiveRecord::ConnectionAdapters::NullDBAdapter < ActiveRecord::Connection
   end
 
   def exec_query(statement, name = 'SQL', binds = [], options = {})
+    internal_exec_query(statement, name, binds, **options)
+  end
+
+  def internal_exec_query(statement, name = 'SQL', binds = [], prepare: false, async: false)
     self.execution_log << Statement.new(entry_point, statement)
     EmptyResult.new
   end
 
-  def select_rows(statement, name = nil, binds = [])
+  def select_rows(statement, name = nil, binds = [], async: false)
     [].tap do
       self.execution_log << Statement.new(entry_point, statement)
     end
