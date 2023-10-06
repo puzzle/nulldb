@@ -164,15 +164,15 @@ describe "NullDB" do
 
   it "should generate new IDs when inserting unsaved objects" do
     cxn = Employee.connection
-    id1 = cxn.insert("some sql", "SomeClass Create", "id", nil, nil)
-    id2 = cxn.insert("some sql", "SomeClass Create", "id", nil, nil)
+    id1 = cxn.insert("some sql", "SomeClass Create", "id", nil, nil).first
+    id2 = cxn.insert("some sql", "SomeClass Create", "id", nil, nil).first
     expect( id2 ).to eq (id1 + 1)
   end
 
   it "should re-use object ID when inserting saved objects" do
     cxn = Employee.connection
     id1 = cxn.insert("some sql", "SomeClass Create", "id", 23, nil)
-    expect( id1 ).to eq 23
+    expect( id1 ).to eq [23]
   end
 
   it "should log executed SQL statements" do
