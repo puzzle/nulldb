@@ -178,12 +178,14 @@ class ActiveRecord::ConnectionAdapters::NullDBAdapter < ActiveRecord::Connection
     end
   end
 
-  def insert(statement, name = nil, primary_key = nil, object_id = nil, sequence_name = nil, binds = [])
-    (object_id || next_unique_id).tap do
-      with_entry_point(:insert) do
-        super(statement, name, primary_key, object_id, sequence_name)
-      end
+  def insert(statement, name = nil, primary_key = nil, object_id = nil, sequence_name = nil, binds = [], returning: nil)
+    with_entry_point(:insert) do
+      super(statement, name, primary_key, object_id, sequence_name)
     end
+
+    result = object_id || next_unique_id
+
+    returning ? [result] : result
   end
   alias :create :insert
 
