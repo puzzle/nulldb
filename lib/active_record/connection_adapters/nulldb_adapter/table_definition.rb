@@ -12,6 +12,8 @@ class ActiveRecord::ConnectionAdapters::NullDBAdapter
     alias_method :inet, :string
     alias_method :jsonb, :json if method_defined? :json
     alias_method :hstore, :json
+    
+    def unique_constraint(*,**,&); end
 
     if ::ActiveRecord::VERSION::MAJOR == 7 && ::ActiveRecord::VERSION::MINOR >= 1
       # Avoid check for option validity
