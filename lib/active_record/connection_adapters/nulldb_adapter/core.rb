@@ -270,7 +270,7 @@ class ActiveRecord::ConnectionAdapters::NullDBAdapter < ActiveRecord::Connection
 
   protected
 
-  def select(statement, name = nil, binds = [], prepare: nil, async: nil)
+  def select(statement, name = nil, binds = [], prepare: nil, async: nil, allow_retry: nil)
     EmptyResult.new.tap do |r|
       r.bind_column_meta(columns_for(name))
       self.execution_log << Statement.new(entry_point, statement)
