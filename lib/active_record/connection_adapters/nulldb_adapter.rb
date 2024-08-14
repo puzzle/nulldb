@@ -9,6 +9,8 @@ require 'active_record/connection_adapters/abstract_adapter'
 require 'nulldb/core'
 require 'nulldb/extensions'
 
+require 'active_record/connection_adapters/quoting'
+
 require 'active_record/connection_adapters/nulldb_adapter/core'
 require 'active_record/connection_adapters/nulldb_adapter/statement'
 require 'active_record/connection_adapters/nulldb_adapter/checkpoint'
