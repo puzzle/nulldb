@@ -26,31 +26,41 @@ Any version of ActiveRecord >= 6.0
 
 ## Installation
 
-    gem install activerecord-nulldb-adapter
+```bash
+gem install activerecord-nulldb-adapter
+```
 
 ## How
 
 Once installed, NullDB can be used much like any other ActiveRecord database
 adapter:
 
-    ActiveRecord::Base.establish_connection :adapter => :nulldb
+```ruby
+ActiveRecord::Base.establish_connection :adapter => :nulldb
+```
 
 NullDB needs to know where you keep your schema file in order to reflect table
 metadata.  By default it looks in RAILS_ROOT/db/schema.rb.  You can override
 that by setting the `schema` option:
 
-    ActiveRecord::Base.establish_connection :adapter => :nulldb,
-                                            :schema  => 'foo/myschema.rb'
+```ruby
+ActiveRecord::Base.establish_connection :adapter => :nulldb,
+                                        :schema  => 'foo/myschema.rb'
+```
 
 NullDB comes with RSpec integration.  To replace the database with NullDB in
 all of your specs, put the following in your spec/rails_helper:
 
-    require 'nulldb_rspec'
-    include NullDB::RSpec::NullifiedDatabase
+```ruby
+require 'nulldb_rspec'
+include NullDB::RSpec::NullifiedDatabase
+```
 
 after you load your rails environment
 
-    require File.expand_path('../config/environment', __dir__)
+```ruby
+require File.expand_path('../config/environment', __dir__)
+```
 
 otherwise you will encounter issues such as
 ([bug)](https://github.com/nulldb/nulldb/pull/90#issuecomment-496690958).
@@ -58,17 +68,19 @@ otherwise you will encounter issues such as
 Or if you just want to use NullDB in a specific spec context, you can include
 the same module inside a context:
 
-    require 'nulldb_rspec'
+```ruby
+require 'nulldb_rspec'
 
-    describe Employee, "with access to the database" do
-      fixtures :employees
-      # ...
-    end
+describe Employee, "with access to the database" do
+  fixtures :employees
+  # ...
+end
 
-    describe Employee, "with NullDB" do
-      include NullDB::RSpec::NullifiedDatabase
-      # ...
-    end
+describe Employee, "with NullDB" do
+  include NullDB::RSpec::NullifiedDatabase
+  # ...
+end
+```
 
 If you want to have NullDB enabled by default but disabled for particular
 contexts then (see this
@@ -78,29 +90,35 @@ contexts then (see this
 NullDB::Rspec provides some custom matcher support for verifying expectations
 about interactions with the database:
 
-    describe Employee do
-      include NullDB::RSpec::NullifiedDatabase
+```ruby
+describe Employee do
+  include NullDB::RSpec::NullifiedDatabase
 
-      it "should cause an insert statement to be executed" do
-        Employee.create!
-        Employee.connection.should have_executed(:insert)
-      end
-    end
+  it "should cause an insert statement to be executed" do
+    Employee.create!
+    Employee.connection.should have_executed(:insert)
+  end
+end
+```
 
 UnitRecord-style verification that no database calls have been made at all can
 be achieved by using the special `:anything` symbol:
 
-    describe "stuff that shouldn't touch the database" do
-      after :each do
-        Employee.connection.should_not have_executed(:anything)
-      end
-      # ...
-    end
+```ruby
+describe "stuff that shouldn't touch the database" do
+  after :each do
+    Employee.connection.should_not have_executed(:anything)
+  end
+  # ...
+end
+```
 
 You can also experiment with putting NullDB in your database.yml:
 
-    unit_test:
-      adapter: nulldb
+```yaml
+unit_test:
+  adapter: nulldb
+```
 
 However, due to the way Rails hard-codes specific database adapters into its
 standard Rake tasks, you may find that this generates unexpected and
