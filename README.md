@@ -22,9 +22,7 @@ Currently supported Ruby versions: MRI 2.5.x, 2.6.x, 2.7.x, 3.X.
 Experimental support provided for: JRuby
 
 ### ActiveRecord
-Any version of ActiveRecord >= 5.2
-
-It is tested against AR 5.2, 6.0, 6.1 and master branch.
+Any version of ActiveRecord >= 6.0
 
 ## Installation
 

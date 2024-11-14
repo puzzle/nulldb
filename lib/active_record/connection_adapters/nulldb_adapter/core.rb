@@ -197,7 +197,7 @@ class ActiveRecord::ConnectionAdapters::NullDBAdapter < ActiveRecord::Connection
 
   def delete(statement, name=nil, binds = [])
     with_entry_point(:delete) do
-      super(statement, name).size
+      super(statement, name)
     end
   end
 
@@ -268,9 +268,39 @@ class ActiveRecord::ConnectionAdapters::NullDBAdapter < ActiveRecord::Connection
     end
   end
 
+  ### Rails 8.0+ ###
+  def perform_query(raw_connection, statement, binds, type_casted_binds, prepare:, notification_payload:, batch:)
+    self.execution_log << Statement.new(entry_point, statement)
+    NullObject.new
+  end
+
+  def affected_rows(raw_result)
+    0
+  end
+
+  def valid_column_definition_options
+    super + [:array, :using, :cast_as, :as, :type, :enum_type, :stored, :srid]
+  end
+
+  READ_QUERY = ActiveRecord::ConnectionAdapters::AbstractAdapter.build_read_query_regexp(
+    :close, :declare, :fetch, :move, :set, :show
+  ) # :nodoc:
+  private_constant :READ_QUERY
+
+  def write_query?(sql) # :nodoc:
+    !READ_QUERY.match?(sql)
+  rescue ArgumentError # Invalid encoding
+    !READ_QUERY.match?(sql.b)
+  end
+
+  def reconnect
+    true
+  end
+  ### Rails 8.0+ ###
+
   protected
 
-  def select(statement, name = nil, binds = [], prepare: nil, async: nil)
+  def select(statement, name = nil, binds = [], prepare: nil, async: nil, allow_retry: nil)
     EmptyResult.new.tap do |r|
       r.bind_column_meta(columns_for(name))
       self.execution_log << Statement.new(entry_point, statement)
@@ -319,7 +349,7 @@ class ActiveRecord::ConnectionAdapters::NullDBAdapter < ActiveRecord::Connection
 
   def new_table_definition(adapter = nil, table_name = nil, is_temporary = nil, options = {})
     case ::ActiveRecord::VERSION::MAJOR
-    when 6, 7
+    when 6, 7, 8
       TableDefinition.new(self, table_name, temporary: is_temporary, options: options.except(:id))
     when 5
       TableDefinition.new(table_name, is_temporary, options.except(:id), nil)

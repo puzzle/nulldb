@@ -9,6 +9,8 @@ require 'active_record/connection_adapters/abstract_adapter'
 require 'nulldb/core'
 require 'nulldb/extensions'
 
+require 'active_record/connection_adapters/quoting'
+
 require 'active_record/connection_adapters/nulldb_adapter/core'
 require 'active_record/connection_adapters/nulldb_adapter/statement'
 require 'active_record/connection_adapters/nulldb_adapter/checkpoint'
@@ -20,3 +22,12 @@ require 'active_record/connection_adapters/nulldb_adapter/null_object'
 require 'active_record/connection_adapters/nulldb_adapter/table_definition'
 
 require 'active_record/tasks/nulldb_database_tasks' if defined?(ActiveRecord::Tasks)
+
+module ActiveRecord
+  module ConnectionAdapters
+    if ActiveRecord::VERSION::STRING >= '7.2'
+      register 'nulldb', 'ActiveRecord::ConnectionAdapters::NullDBAdapter', 'active_record/connection_adapters/nulldb_adapter'
+    end
+  end
+end
+
