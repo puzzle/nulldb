@@ -1,6 +1,13 @@
 Unreleased
 ----------
 
+1.1.0 (2024-11-14)
+-----------
+
+- Add support to Rails 8 #136
+- *Breaking* Drop support to Ruby 2.5, 2.6
+- *Breaking* Drop support to Rails 6.0 (keep 6.1)
+
 1.0.1 (2023-10-16)
 -----------
 

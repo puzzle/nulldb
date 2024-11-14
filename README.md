@@ -17,12 +17,12 @@ including `after_save` hooks - without ever touching a real database.
 ## Compatibility
 
 ### Ruby
-Currently supported Ruby versions: MRI 2.5.x, 2.6.x, 2.7.x, 3.X.
+Currently supported Ruby versions: `2.7.X`, `3.X`.
 
 Experimental support provided for: JRuby
 
 ### ActiveRecord
-Any version of ActiveRecord >= 6.0
+Any version of ActiveRecord `>= 6.1`
 
 ## Installation
 
